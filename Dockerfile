@@ -7,13 +7,14 @@ RUN wget https://github.com/fcrepo4-exts/fcrepo-webapp-plus/releases/download/fc
 COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 COPY ./overlay-web.xml /overlay-web.xml
 COPY ./repository.json /config/file-simple/repository.json
-COPY ./repo.xml /config/file-simple/repo.xml
+# COPY ./repo.xml /config/file-simple/repo.xml
 COPY ./jetty-users.properties /config/file-simple/jetty-users.properties
+
+# -Dfcrepo.spring.repo.configuration=file:/config/file-simple/repo.xml 
 
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Dfcrepo.home=/fedora-data \
     -Dfcrepo.modeshape.configuration=file:/config/file-simple/repository.json \
-    -Dfcrepo.spring.repo.configuration=file:/config/file-simple/repo.xml \
     -Dfcrepo.modeshape.index.directory=modeshape.index \
     -Dfcrepo.binary.directory=binary.store \
     -Dfcrepo.activemq.directory=activemq \
