@@ -13,6 +13,7 @@ COPY ./jetty-users.properties /config/file-simple/jetty-users.properties
 ENV JAVA_OPTS="-Dfile.encoding=UTF-8 \
     -Dfcrepo.home=/fedora-data \
     -Dfcrepo.modeshape.configuration=file:/config/file-simple/repository.json \
+    -Dfcrepo.spring.repo.configuration=file:/config/file-simple/repo.xml \
     -Dfcrepo.modeshape.index.directory=modeshape.index \
     -Dfcrepo.binary.directory=binary.store \
     -Dfcrepo.activemq.directory=activemq \
