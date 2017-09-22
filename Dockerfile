@@ -1,6 +1,8 @@
 FROM jetty:9.4.6
 
-COPY ./fcrepo-webapp-plus-webac-4.7.3.war /var/lib/jetty/webapps/fcrepo.war
+RUN apt-get update
+RUN apt-get install -y wget
+RUN wget https://github.com/fcrepo4-exts/fcrepo-webapp-plus/releases/download/fcrepo-webapp-plus-4.7.3/fcrepo-webapp-plus-webac-4.7.3.war -O /var/lib/jetty/webapps/fcrepo.war
 
 COPY ./fcrepo.xml /var/lib/jetty/webapps/fcrepo.xml
 COPY ./overlay-web.xml /overlay-web.xml
