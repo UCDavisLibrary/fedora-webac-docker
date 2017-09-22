@@ -3,9 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- Context that supports the actual ModeShape JCR itself -->
 
@@ -16,6 +18,20 @@
         p:repositoryConfiguration="${fcrepo.modeshape.configuration}"/>
 
     <bean class="org.modeshape.jcr.ModeShapeEngine" init-method="start"/>
+
+    <bean name="delegatedPrincipalProvider" class="org.fcrepo.auth.common.DelegateHeaderPrincipalProvider"/>
+
+    <util:set id="principalProviderSet">
+      <ref bean="delegatedPrincipalProvider"/>
+    </util:set>
+
+    <bean name="fad" class="org.fcrepo.auth.webac.WebACAuthorizationDelegate"/>
+    <bean name="accessRolesProvider" class="org.fcrepo.auth.webac.WebACRolesProvider"/>
+
+    <bean name="authenticationProvider" class="org.fcrepo.auth.common.ServletContainerAuthenticationProvider">
+      <property name="fad" ref="fad"/>
+      <property name="principalProviders" ref="principalProviderSet"/>
+    </bean>
 
     <!-- For the time being, load annotation config here too -->
     <bean class="org.fcrepo.metrics.MetricsConfig"/>
